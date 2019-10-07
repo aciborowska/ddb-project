@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8" name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;valo&quot;}">
+  <meta charset="UTF-8" name="vaadin-version" content="7.7.0">
+ </head> 
+ <body> 
+  <vaadin-horizontal-layout spacing size-full margin> 
+   <vaadin-grid size-full :expand="1.5"></vaadin-grid> 
+   <vaadin-panel size-full :expand="2"> 
+    <vaadin-vertical-layout spacing size-full margin> 
+     <vaadin-label size-auto plain-text :expand>
+       Szczegóły zamówienia: 
+     </vaadin-label> 
+     <vaadin-grid size-full :expand="8"></vaadin-grid> 
+     <vaadin-label size-auto plain-text :expand>
+       Opis pozycji: 
+     </vaadin-label> 
+     <vaadin-label size-auto plain-text :expand></vaadin-label> 
+     <vaadin-horizontal-layout size-full :expand> 
+      <vaadin-label plain-text :right :expand>
+        Kwota całkowita: 
+      </vaadin-label> 
+      <vaadin-label plain-text :right :expand>
+        0.00zł 
+      </vaadin-label> 
+     </vaadin-horizontal-layout> 
+    </vaadin-vertical-layout> 
+   </vaadin-panel> 
+  </vaadin-horizontal-layout>  
+ </body>
+</html>

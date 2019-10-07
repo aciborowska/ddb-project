@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8" name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;valo&quot;}">
+  <meta charset="UTF-8" name="vaadin-version" content="7.7.0">
+ </head> 
+ <body> 
+  <vaadin-vertical-layout spacing margin> 
+   <vaadin-horizontal-layout spacing width="500px"> 
+    <vaadin-label size-auto plain-text :middle :expand="1.5">
+      Nazwa: 
+    </vaadin-label> 
+    <vaadin-label size-auto plain-text :expand="4.5">
+      Nazwa 
+    </vaadin-label> 
+   </vaadin-horizontal-layout> 
+   <vaadin-horizontal-layout spacing width="500px"> 
+    <vaadin-label size-auto plain-text :middle :expand="1.5">
+      Adres: 
+    </vaadin-label> 
+    <vaadin-text-area enabled="false" rows="2" width-full :expand="4.5">
+      Adress 
+    </vaadin-text-area> 
+   </vaadin-horizontal-layout> 
+   <vaadin-horizontal-layout spacing width="500px"> 
+    <vaadin-label size-auto plain-text :middle :expand="1.5">
+      Nr kontaktowy: 
+    </vaadin-label> 
+    <vaadin-text-field enabled="false" width-full :expand="4.5"></vaadin-text-field> 
+   </vaadin-horizontal-layout> 
+   <vaadin-horizontal-layout spacing width="500px"> 
+    <vaadin-label size-auto plain-text :middle :expand="1.5">
+      Email: 
+    </vaadin-label> 
+    <vaadin-text-field enabled="false" width-full :expand="4.5"></vaadin-text-field> 
+   </vaadin-horizontal-layout> 
+   <vaadin-horizontal-layout spacing> 
+    <vaadin-button plain-text>
+      Edytuj dane 
+    </vaadin-button> 
+    <vaadin-button visible="false" plain-text>
+      Zapisz 
+    </vaadin-button> 
+    <vaadin-button visible="false" plain-text>
+      Anuluj 
+    </vaadin-button> 
+   </vaadin-horizontal-layout> 
+  </vaadin-vertical-layout>  
+ </body>
+</html>

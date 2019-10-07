@@ -1,0 +1,24 @@
+Włączenie nowego node'a:
+(1) na czas robienia dumpa powinno się zatrzymać mastera!
+	1. Kopia danych z mastera
+	C:\Program Files\MySQL\MySQL Server 5.7\bin>mysqldump.exe -u root -p  --master-d
+	ata mydb > "D:\test.sql"
+	Enter password: ********
+
+	C:\Program Files\MySQL\MySQL Server 5.7\bin>
+
+	2. W skrypcie .sql znajduje się defaultowa komenda ustawiająca mastera, można ją zmienić na taką jak w pozostałych przypadkach, choćby dlatego że łączymy się tutaj na domyślny port 3306 i z ustawieniami użytkownika wykorzystywanego do tworzenia dump'a
+
+				CHANGE MASTER TO MASTER_HOST='localhost', MASTER_USER='repl',  MASTER_PASSWORD='pass123', MASTER_PORT=3306,  MASTER_LOG_FILE='mysql-bin.000001', MASTER_LOG_POS=595;
+
+				Warto sobie tylko zostawić LOG_POS i LOG_FILE
+		
+	3. Wykonanie skryptu (test.sql) na slavie, należy tylko pamiętać, aby była stworzony był tam schemat, jeśli nie ma to dodajemy:
+		CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
+		USE `mydb`;
+	
+(2)
+	Można też zrobić kopię slave'a http://dev.mysql.com/doc/refman/5.7/en/replication-howto-additionalslaves.html
+	
+	
+Przełącznie slave'a na mastera jeśli master zdechnie	

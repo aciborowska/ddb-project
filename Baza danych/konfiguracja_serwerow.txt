@@ -1,0 +1,58 @@
+﻿Konfiguracja bazy danych:
+1. Postaw 3 serwery bazodanowe:
+	Możesz zainstalować 3 serwery korzystając z MySQL Community Installera albo przeporwadzić magiczną procedurę uruchamiania 3 instancji serwera.
+	Kiedyś działając wg http://docs.oracle.com/cd/E19078-01/mysql/mysql-refman-5.1/server-administration.html#multiple-windows-servers nie miałam problemów, niestety teraz nie pykło.
+	Moja procedura wyglądała następująco:
+	1. Instalacja MySQL Server 5.7 z Community Installer'a. Nie przywiązuj się zbytnio do wstępnej konfiguracji stworzonej podczas instalacji bo i tak usuniemy tę usługę.
+	2. W wybranym katalogu stwórz 3 katalogi (np. medStoreData1, medStoreData2, medStoreData3) i do każdego z nich przekopiuj zawartość C:\ProgramData\MySQL\MySQL Server 5.7\Data.
+	Z każdego katalogu usuń plik auto.cnf - wygenerują się automatycznie po uruchomieniu każdego serwera.
+	3. Stwórz 3 pliki konfiguracyjne (np.  medStore1.cnf,  medStore2.cnf,  medStore3.cnf) i do każdego wklej zawartość C:\ProgramData\MySQL\MySQL Server 5.7\my.ini. W sekcji [client] i [mysqld] zmień porty na 3306, 3307 i 3308. Dodatkowo w każdym z plików musisz poprawić datadir, np. dla medStore1.cnf -> datadir="D:/Studia/II_stopien/2_semestr/RBD/Projekt/db_server/medStoreData1" itd.
+	4. Otwórz cmd w trybie administratora. Idź do katalogu z mysqld (u mnie: C:\Program Files\MySQL\MySQL Server 5.7\bin) i teraz usuń tę usługę, którą stworzyłeś na początku: mysqld --remove nazwa_usługi. 
+	Teraz instalujemy kolejno wszystkie usługi:
+		 C:\Program Files\MySQL\MySQL Server 5.7\bin>mysqld --install MedStore1 --defaults-file="D:\Studia\II_stopien\2_semestr\RBD\Projekt\db_server\medStore1.cnf"
+		 C:\Program Files\MySQL\MySQL Server 5.7\bin>mysqld --install MedStore2 --defaults-file="D:\Studia\II_stopien\2_semestr\RBD\Projekt\db_server\medStore2.cnf"
+		 C:\Program Files\MySQL\MySQL Server 5.7\bin>mysqld --install MedStore3 --defaults-file="D:\Studia\II_stopien\2_semestr\RBD\Projekt\db_server\medStore3.cnf"
+	I dopalamy:
+		net start MedStore1
+		net start MedStore2
+		net start MedStore3
+	
+	Powinno śmigać :D 
+	U mnie serwery to kolejno: 	MedStore1 : 3306 (master)
+								MedStore2 : 3307 (slave1)
+								MedStore3 : 3308 (slave2)
+2. Wrzucamy model bazy na wszystkie serwery: otwieramy model : Database -> Forward Engineer...
+3. Konfiguracja mastera:
+		a. Otwieramy plik kofiguracyjny serwera(u mnie: C:\ProgramData\MySQL\MySQL Server 5.7\my.ini). 
+		Ustawiamy:
+			log-bin=mysql-bin
+			server-id=1
+		b. Zrestartuj serwer
+		c. Otwieramy Workbench, łączymy się z MedStore1 i wykonujemy:
+			mysql> CREATE USER 'repl'@'%' IDENTIFIED BY 'pass123';
+			mysql> GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%';
+			mysql> SHOW MASTER STATUS;
+			I zapisz sobiie gdzieś informacje z kolumny File i Position, bo będą potrzebne później
+4. Konfiguracja slave'a:
+		a. W plikach konfiguracyjnych obu slave'ów zmień server-id na 2 (medStore2.cnf) i 3 (medStore3.cnf).
+		b. Podłączenie slave do mastera:
+		CHANGE MASTER TO MASTER_HOST='localhost', MASTER_USER='repl',  MASTER_PASSWORD='pass123', MASTER_PORT=3306,  MASTER_LOG_FILE='mysql-bin.000001', MASTER_LOG_POS=595;
+		b. I uruchamiamy: START SLAVE;
+		
+		Powinno zadziałać :D
+
+5.11.2016r. 
+5. Dorzuciłam perspektywy do modelu, jeśli będziesz generował model przez Database -> Forward Engineer... to się wygenerują.
+ Mamy w sumie 6 perspektyw:
+	-> 2 dla klientów (podział wg parzystości id) : pharmacy1 i pharmacy2
+	-> 2 dla zamówień (podział wg klientów): orders1 i orders2
+	-> 2 dla pozycji zamówień (podział wg zamówień): orderpositions1 i orderpositions2
+
+ Aby uwzględnić "filtrowanie perspektyw" dla slave'ów musimy je najpierw zatrzymać (stop slave), a następnie wykonujemy:
+ CHANGE REPLICATION FILTER REPLICATE_IGNORE_TABLE = 
+( mydb.pharamcy2, mydb.orders2, mydb.orderpositions2); --slave1 
+ CHANGE REPLICATION FILTER REPLICATE_IGNORE_TABLE = 
+(mydb.pharamcy1, mydb.orders1, mydb.orderpositions1); --slave2
+
+Generalnie niewiele to zmienia, bo i tak wszystkie zmiany przesyłamy dalej, a perspektywy tylko załatwiają filtrowanie,
+ale lepsze to niż nic.

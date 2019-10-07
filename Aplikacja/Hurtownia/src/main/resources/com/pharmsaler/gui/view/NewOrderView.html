@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8" name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;valo&quot;}">
+  <meta charset="UTF-8" name="vaadin-version" content="7.7.0">
+ </head> 
+ <body> 
+  <vaadin-vertical-layout spacing size-full margin> 
+   <vaadin-horizontal-layout spacing size-full :expand="3"> 
+    <vaadin-vertical-layout spacing size-full :expand="1.5"> 
+     <vaadin-horizontal-layout size-full :expand> 
+      <vaadin-label plain-text :middle :expand>
+        Sposób zapłaty 
+      </vaadin-label> 
+      <vaadin-combo-box width-full height="26px" :middle :center :expand="2"></vaadin-combo-box> 
+     </vaadin-horizontal-layout> 
+     <vaadin-horizontal-layout size-full :middle :center :expand> 
+      <vaadin-label plain-text :middle :expand>
+        Dostawa 
+      </vaadin-label> 
+      <vaadin-combo-box width-full height="26px" :middle :center :expand="2"></vaadin-combo-box> 
+     </vaadin-horizontal-layout> 
+     <vaadin-text-area rows="3" size-full :middle :center :expand="2.5"></vaadin-text-area> 
+    </vaadin-vertical-layout> 
+    <vaadin-grid size-full :middle :center :expand="2"></vaadin-grid> 
+   </vaadin-horizontal-layout> 
+   <vaadin-grid size-full :expand="3"></vaadin-grid> 
+   <vaadin-horizontal-layout spacing :middle :right :expand> 
+    <vaadin-button plain-text :middle :right>
+      Zatwierdź 
+    </vaadin-button> 
+    <vaadin-button plain-text :middle :right>
+      Anuluj 
+    </vaadin-button> 
+   </vaadin-horizontal-layout> 
+  </vaadin-vertical-layout>  
+ </body>
+</html>
